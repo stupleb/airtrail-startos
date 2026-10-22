@@ -1,6 +1,6 @@
 # Updating the upstream version
 
-"Upstream" is the AirTrail Docker image `johly/airtrail`, pinned by tag in `startos/manifest/index.ts` (`images.airtrail.source.dockerTag`). Tags carry a `v` prefix and match the GitHub release tags; `latest` and the major tag (`v3`) move with every release. PostgreSQL is pinned beside it (`images.postgres`).
+"Upstream" is the AirTrail Docker image `johly/airtrail`, pinned by tag in `startos/manifest/index.ts` (`images.airtrail.source.dockerBuild.buildArgs.IMAGE`), which the root `Dockerfile` builds on. Tags carry a `v` prefix and match the GitHub release tags; `latest` and the major tag (`v3`) move with every release. PostgreSQL is pinned beside it (`images.postgres`).
 
 ## Determining the upstream version
 
@@ -13,7 +13,7 @@ Confirm the tag exists for `amd64` and `arm64` before pinning it, and read every
 
 ## Applying the bump
 
-1. Set `images.airtrail.source.dockerTag` to `johly/airtrail:<tag>`.
+1. Set `images.airtrail.source.dockerBuild.buildArgs.IMAGE` to `johly/airtrail:<tag>`. If the new image runs Node 22.23.4 or later (`docker run --rm --entrypoint node johly/airtrail:<tag> --version`), drop the root `Dockerfile` and go back to `dockerTag`: it only exists to distrust eMudhra's G3 root.
 2. Set `startos/versions/current.ts` to `<version>:0` — the tag without its `v` — and write release notes per the workspace's release-note rules. When the version already there has an `up` that does work, first move it into its own file under `startos/versions/` and list it in `other` in `index.ts`.
 3. Diff what the package depends on between the two tags:
 
