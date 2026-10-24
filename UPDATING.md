@@ -13,7 +13,7 @@ Confirm the tag exists for `amd64` and `arm64` before pinning it, and read every
 
 ## Applying the bump
 
-1. Set `images.airtrail.source.dockerBuild.buildArgs.IMAGE` to `johly/airtrail:<tag>`. If the new image runs Node 22.23.4 or later (`docker run --rm --entrypoint node johly/airtrail:<tag> --version`), drop the root `Dockerfile` and go back to `dockerTag`: it only exists to distrust eMudhra's G3 root.
+1. Set `images.airtrail.source.dockerBuild.buildArgs.IMAGE` to `johly/airtrail:<tag>`. If the new image runs Node 22.23.4 or later (`docker run --rm --entrypoint node johly/airtrail:<tag> --version`), drop the root `Dockerfile` and go back to `dockerTag`: it only exists to replace upstream's Node 22.23.3 and to distrust eMudhra's G3 root.
 2. Set `startos/versions/current.ts` to `<version>:0` — the tag without its `v` — and write release notes per the workspace's release-note rules. When the version already there has an `up` that does work, first move it into its own file under `startos/versions/` and list it in `other` in `index.ts`.
 3. Diff what the package depends on between the two tags:
 
