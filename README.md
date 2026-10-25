@@ -35,12 +35,12 @@
 
 ## Image and Container Runtime
 
-Two images run as two processes plus a setup step. `johly/airtrail` is built through the root `Dockerfile`, which replaces upstream's Node 22.23.3 with the `node` binary from `node:22.23.4-bookworm-slim` (the October 2026 Node.js security release), installs Debian's CA store and sets `NODE_OPTIONS=--use-openssl-ca`, so Node verifies outbound TLS against that store instead of its compiled-in roots, which still trust the compromised eMudhra emSign ECC Root CA - G3. The layer is temporary and comes out once upstream ships an image on Node 22.23.4 or later. `postgres` runs unmodified.
+Two images, both used unmodified, run as two processes plus a setup step.
 
-| Image      | Source                                      | Architectures   |
-| ---------- | ------------------------------------------- | --------------- |
-| `airtrail` | `johly/airtrail` with the root `Dockerfile` | x86_64, aarch64 |
-| `postgres` | `postgres` (Alpine)                         | x86_64, aarch64 |
+| Image      | Source              | Architectures   |
+| ---------- | ------------------- | --------------- |
+| `airtrail` | `johly/airtrail`    | x86_64, aarch64 |
+| `postgres` | `postgres` (Alpine) | x86_64, aarch64 |
 
 | Subcontainer | Runs                               | Purpose                                                           |
 | ------------ | ---------------------------------- | ----------------------------------------------------------------- |
