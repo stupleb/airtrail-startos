@@ -13,7 +13,7 @@ export const manifest = setupManifest({
   volumes: ['startos', 'main', 'db'],
   images: {
     airtrail: {
-      source: { dockerTag: 'johly/airtrail:v3.13.1' },
+      source: { dockerTag: 'johly/airtrail:v3.14.0' },
       arch: ['x86_64', 'aarch64'],
     },
     postgres: {
