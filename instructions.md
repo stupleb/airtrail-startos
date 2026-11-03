@@ -5,6 +5,7 @@
 - [Adding flights](https://github.com/johanohly/AirTrail/blob/main/docs/content/docs/features/add-flight.mdx) — entering a flight by hand or looking it up by flight number
 - [Importing flights](https://github.com/johanohly/AirTrail/blob/main/docs/content/docs/features/import.mdx) — bringing in your history from MyFlightradar24, App in the Air, Flighty, TripIt and other trackers
 - [Sharing](https://github.com/johanohly/AirTrail/blob/main/docs/content/docs/features/sharing.mdx) — public, read-only links to your flights
+- [Exporting flights](https://github.com/johanohly/AirTrail/blob/main/docs/content/docs/features/export.mdx) — export files, and the calendar feed your calendar app can subscribe to
 - [Roles and permissions](https://github.com/johanohly/AirTrail/blob/main/docs/content/docs/administration/roles.mdx) — what the owner, administrators and users can do
 - [OAuth sign-in](https://github.com/johanohly/AirTrail/blob/main/docs/content/docs/features/oauth.mdx) — signing in with an OpenID Connect provider
 - [API keys and connected apps](https://github.com/johanohly/AirTrail/blob/main/docs/content/docs/features/api-keys.mdx) — keys for scripts, integrations and MCP clients
@@ -40,6 +41,10 @@ When someone else can't sign in, run **Reset User Password** while AirTrail is r
 ### When another service asks to read your flights
 
 A service on your server that works with AirTrail, such as Dawarich, asks for access instead of needing an API key copied into it. A task appears on AirTrail's page naming the service, and usually whose account it is for. Open it, choose the AirTrail account whose flights that service may read, and approve, or deny the request. The service can only read; it never changes your flights. The key it gets is listed under that account's **Settings → Security** in AirTrail, where deleting it ends the access.
+
+### Calendar feed
+
+AirTrail builds the feed URL under **Settings → Export** from the address you have it open on. Open the **Web UI** on an address your calendar app can reach before you copy the URL. A calendar service that fetches feeds over the internet, such as Google Calendar, needs a public domain.
 
 ### Flight lookups
 

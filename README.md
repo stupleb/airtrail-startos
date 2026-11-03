@@ -9,7 +9,7 @@
 > upstream documentation is accurate and fully applicable — see the
 > Documentation section of `instructions.md` for links.
 
-[AirTrail](https://github.com/johanohly/AirTrail) is a personal flight tracker: every flight on a world map, with statistics, visited countries, imports from other trackers, accounts for several people, public share links, a REST API and an MCP server. This package runs it with its PostgreSQL database and creates the owner account itself, so AirTrail's Welcome screen, where the first visitor becomes the owner, never opens.
+[AirTrail](https://github.com/johanohly/AirTrail) is a personal flight tracker: every flight on a world map, with statistics, visited countries, imports from other trackers, accounts for several people, public share links, a calendar feed, a REST API and an MCP server. This package runs it with its PostgreSQL database and creates the owner account itself, so AirTrail's Welcome screen, where the first visitor becomes the owner, never opens.
 
 - **Upstream repo:** <https://github.com/johanohly/AirTrail>
 - **Wrapper repo:** <https://github.com/stupleb/airtrail-startos>
@@ -56,7 +56,7 @@ The actions run `accounts.mjs` in a temporary `accounts` subcontainer of the Air
 
 ## Volume and Data Layout
 
-Three volumes. Everything AirTrail stores — users, flights, tracks, roles, shares, API keys, settings, and the airport, airline and aircraft lists — is in PostgreSQL.
+Three volumes. Everything AirTrail stores — users, flights, tracks, roles, shares, calendar feeds, API keys, settings, and the airport, airline and aircraft lists — is in PostgreSQL.
 
 | Volume    | Mount point                                   | Contents                                                                             |
 | --------- | --------------------------------------------- | ------------------------------------------------------------------------------------ |
@@ -88,7 +88,7 @@ None.
 
 ## Network Access and Interfaces
 
-One interface. The web app, the REST API (`/api/v1`), the MCP endpoint (`/api/mcp`) and public share links (`/share/<slug>`) share it.
+One interface. The web app, the REST API (`/api/v1`), the MCP endpoint (`/api/mcp`), public share links (`/share/<slug>`) and calendar feeds (`/api/calendar/<token>.ics`, no sign-in) share it.
 
 | Interface | Id   | Type | Port | Protocol |
 | --------- | ---- | ---- | ---- | -------- |
@@ -100,7 +100,7 @@ One interface. The web app, the REST API (`/api/v1`), the MCP endpoint (`/api/mc
 - **Login is rate limited per client:** 10 attempts a minute per address, 5 per address and username, keyed on `X-Forwarded-For`. Requests without that header — from another service on the server, for instance — are not limited.
 - **OIDC sign-in** sends the identity provider the address the user signed in from, plus `/login`, as its redirect URI; register each address people use.
 
-AirTrail reaches out on its own: the first start downloads the airport list from OurAirports (GitHub Pages) and the airline and aircraft lists and airline icons from AirTrail's GitHub repository. The browser loads map tiles from OpenFreeMap unless another provider is chosen in AirTrail's settings, and checks GitHub for AirTrail releases. Flight-number lookups go to adsbdb, or to AeroDataBox once a key is set in AirTrail's settings.
+AirTrail reaches out on its own: the first start downloads the airport list from OurAirports (GitHub Pages) and the airline and aircraft lists and airline icons from AirTrail's GitHub repository. The browser loads map tiles from OpenFreeMap unless another provider is chosen in AirTrail's settings, and checks GitHub for AirTrail releases. Flight-number lookups go to adsbdb, or to AeroDataBox once a key is set in AirTrail's settings. Aircraft photos, once an administrator turns them on, are fetched from Planespotters.net by the server.
 
 ## Installation and First-Run Flow
 
@@ -178,7 +178,7 @@ Four log lines look like faults and are not:
 
 The database is dumped, not copied: `sdk.Backups.withPgDump` runs `pg_dump` of the `airtrail` database, and restore creates a fresh cluster and replays the dump. The `startos` and `main` volumes are copied as they are.
 
-- **Included:** every user, flight, track, share, API key and setting (database), the airline icons (`main`), and `store.json` with the database password and the owner's credentials.
+- **Included:** every user, flight, track, share, calendar feed, API key and setting (database), the airline icons (`main`), and `store.json` with the database password and the owner's credentials.
 - **Excluded:** nothing.
 - **After a restore:** nothing to redo. The owner's password is whatever it was when the backup was taken.
 
